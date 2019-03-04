@@ -80,7 +80,7 @@ static audio_element_handle_t create_filter(int source_rate, int source_channel,
     return rsp_filter_init(&rsp_cfg);
 }
 
-char input[255] = "          ALERT. HENRY DETECTED. HENRY DETECTED. HENRY HAS ARRIVED HOME.  ";
+char input[255] = "HELLO MY NAME IS SAM.  HELLO MY NAME IS SAM.  HELLO MY NAME IS SAM.  ";
 
 void app_main(void)
 {
@@ -152,10 +152,6 @@ void app_main(void)
     ESP_LOGI(TAG, "[6.2] Listening event from peripherals");
     audio_event_iface_set_listener(esp_periph_get_event_iface(), evt);
 
-
-
-
-
     printf("text input: %s\n", input);
 
     if (!TextToPhonemes((unsigned char *)input)) return;
@@ -212,24 +208,9 @@ void app_main(void)
             continue;
         }
 
-
         ESP_LOGI(TAG, "[ * ] Audio event");
         ESP_LOGI(TAG, "[ * ] Free heap: %u", xPortGetFreeHeapSize());
         ESP_LOGI(TAG, "[ * ] msg.cmd: %d", msg.cmd);
-/*
-        if (msg.source_type == AUDIO_ELEMENT_TYPE_ELEMENT && msg.source == (void *) wav_decoder
-            && msg.cmd == AEL_MSG_CMD_REPORT_MUSIC_INFO) {
-            audio_element_info_t music_info = {0};
-            audio_element_getinfo(wav_decoder, &music_info);
-
-            ESP_LOGI(TAG, "[ * ] Receive music info from wav decoder, sample_rates=%d, bits=%d, ch=%d",
-                     music_info.sample_rates, music_info.bits, music_info.channels);
-
-            audio_element_setinfo(bt_stream_writer, &music_info);
-            //i2s_stream_set_clk(bt_stream_writer, music_info.sample_rates, music_info.bits, music_info.channels);
-            continue;
-        }
-*/
 
         /* Stop when the Bluetooth is disconnected or suspended */
         if (msg.source_type == PERIPH_ID_BLUETOOTH

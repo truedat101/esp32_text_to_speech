@@ -4,14 +4,6 @@
 #
 
 
-#PROJECT_NAME := esp-adf-sam
-#CURRENT_PATH := $(shell pwd)
-#ADF_PATH := $(CURRENT_PATH)/esp-adf
-#### EXTRA_COMPONENT_DIRS := $(CURRENT_PATH)/components
-#include $(ADF_PATH)/project.mk
-
-
-
-PROJECT_NAME := bt_source_demo
+PROJECT_NAME := esp32_text_to_speech
 include $(ADF_PATH)/project.mk
 IDF_PATH := $(ADF_PATH)/esp-idf

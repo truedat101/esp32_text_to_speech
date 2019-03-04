@@ -20,10 +20,8 @@ CONFIG_ESP32_DEFAULT_CPU_FREQ_240=y
 CONFIG_ESP32_DEFAULT_CPU_FREQ_MHZ=240
 CONFIG_SPIRAM_SUPPORT=y
 
-# Increase default app partition size to accommodate BT
-# by providing new partition table in "partitions_bt_source_example.csv"
 CONFIG_PARTITION_TABLE_CUSTOM=y
-CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions_bt_source_example.csv"
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
 CONFIG_PARTITION_TABLE_CUSTOM_APP_BIN_OFFSET=0x10000
-CONFIG_PARTITION_TABLE_FILENAME="partitions_bt_source_example.csv"
+CONFIG_PARTITION_TABLE_FILENAME="partitions.csv"
 CONFIG_APP_OFFSET=0x10000
