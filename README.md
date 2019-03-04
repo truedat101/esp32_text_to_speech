@@ -15,7 +15,7 @@ You'll need to install the esp32 ADF - instructions here: https://docs.espressif
 
 You MUST modify main/app_main.c to specify the device name of your bluetooth speaker.
 
-look for this line:
+look for this line, change BT-12 to the device name of your bluetooth speaker.
 ```
         .remote_name = "BT-12",
 ```
