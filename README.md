@@ -8,7 +8,7 @@ This is a modifed version of: https://github.com/tuanpmt/esp-adf-sam.git
 
 This example plays audio generated from text `HELLO, MY NAME IS SAM.` using [SAM](https://github.com/s-macke/SAM) - Tiny Speech Synthesizer.
 
-***To run this example you need ESP32 with SPI RAM such as a WROVERB esp32.*** Alternatively, you may be smart enough to work out how to reduce the RAM usage of this project so it runs on an ordinary esp32. 
+***To run this example you need ESP32 with PSRAM such as a WROVERB esp32.*** Alternatively, you may be smart enough to work out how to reduce the RAM usage of this project so it runs on an ordinary esp32. 
 Let me know if you do, and I'll update to include your improvements.
 
 You'll need to install the esp32 ADF - instructions here: https://docs.espressif.com/projects/esp-adf/en/latest/get-started/
