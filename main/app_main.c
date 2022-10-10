@@ -10,29 +10,37 @@
 #include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_log.h"
 
+#include "esp_log.h"
+#include "nvs_flash.h"
+
+#include "sdkconfig.h"
 #include "audio_element.h"
 #include "audio_pipeline.h"
 #include "audio_event_iface.h"
 #include "audio_mem.h"
 #include "audio_common.h"
+
 #include "i2s_stream.h"
 #include "raw_stream.h"
 #include "filter_resample.h"
 #include "audio_hal.h"
 #include "raw_stream.h"
 
-#include "sdkconfig.h"
+
 #include <time.h>
 
 #include "reciter.h"
 #include "sam.h"
 #include "debug.h"
 
+#include "board.h"
+
+#include "audio_idf_version.h"
+
 #include "bluetooth_service.h"
 #include "esp_peripherals.h"
-#include "nvs_flash.h"
+
 
 
 #define SAVE_FILE_RATE      22050
@@ -94,8 +102,10 @@ void app_main(void)
     }
 
     // Initialize peripherals management
-    esp_periph_config_t periph_cfg = { 0 };
-    esp_periph_init(&periph_cfg);
+    // esp_periph_config_t periph_cfg = { 0 };
+    // esp_periph_set_handle_t set = esp_periph_init(&periph_cfg);
+    esp_periph_config_t periph_cfg = DEFAULT_ESP_PERIPH_SET_CONFIG();
+    esp_periph_set_handle_t set = esp_periph_set_init(&periph_cfg);
 
     audio_pipeline_handle_t pipeline;
     audio_element_handle_t resample_decoder, bt_stream_writer;
@@ -107,7 +117,7 @@ void app_main(void)
     bluetooth_service_cfg_t bt_cfg = {
         .device_name = "ESP-ADF-SOURCE",
         .mode = BLUETOOTH_A2DP_SOURCE,
-        .remote_name = "BT-12",
+        .remote_name = CONFIG_BT_REMOTE_NAME,
     };
     bluetooth_service_start(&bt_cfg);
 
@@ -140,7 +150,7 @@ void app_main(void)
     esp_periph_handle_t bt_periph = bluetooth_service_create_periph();
 
     ESP_LOGI(TAG, "[5.2] Start Bluetooth peripheral");
-    esp_periph_start(bt_periph);
+    esp_periph_start(set, bt_periph);
 
     ESP_LOGI(TAG, "[ 3 ] Setup event listener");
     audio_event_iface_cfg_t evt_cfg = AUDIO_EVENT_IFACE_DEFAULT_CFG();
@@ -150,7 +160,9 @@ void app_main(void)
     audio_pipeline_set_listener(pipeline, evt);
 
     ESP_LOGI(TAG, "[6.2] Listening event from peripherals");
-    audio_event_iface_set_listener(esp_periph_get_event_iface(), evt);
+    //audio_event_iface_set_listener(esp_periph_get_event_iface(), evt);
+    audio_event_iface_set_listener(esp_periph_set_get_event_iface(set), evt);
+
 
     printf("text input: %s\n", input);
 
@@ -216,7 +228,7 @@ void app_main(void)
         if (msg.source_type == PERIPH_ID_BLUETOOTH
                 && msg.source == (void *)bt_periph) {
             if ((msg.cmd == PERIPH_BLUETOOTH_DISCONNECTED) || (msg.cmd == PERIPH_BLUETOOTH_AUDIO_SUSPENDED)) {
-                ESP_LOGW(TAG, "[ * ] Bluetooth disconnected or suspended");
+                ESP_LOGW(TAG, "[ * ] ---------------------------------> Bluetooth disconnected or suspended");
                 periph_bluetooth_stop(bt_periph);
                 break;
             }
@@ -226,6 +238,8 @@ void app_main(void)
         /* Stop when the last pipeline element (bt_stream_writer in this case) receives stop event */
         if (msg.source_type == AUDIO_ELEMENT_TYPE_ELEMENT && msg.source == (void *) bt_stream_writer
                 && msg.cmd == AEL_MSG_CMD_REPORT_STATUS && (int) msg.data == AEL_STATUS_STATE_STOPPED) {
+                ESP_LOGW(TAG, "[ * ] ---------------------------------> Audio stop event");
+                
             break;
         }
 
