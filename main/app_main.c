@@ -228,7 +228,7 @@ void app_main(void)
         if (msg.source_type == PERIPH_ID_BLUETOOTH
                 && msg.source == (void *)bt_periph) {
             if ((msg.cmd == PERIPH_BLUETOOTH_DISCONNECTED) || (msg.cmd == PERIPH_BLUETOOTH_AUDIO_SUSPENDED)) {
-                ESP_LOGW(TAG, "[ * ] ---------------------------------> Bluetooth disconnected or suspended");
+                ESP_LOGW(TAG, "[ * ] Bluetooth disconnected or suspended");
                 periph_bluetooth_stop(bt_periph);
                 break;
             }
@@ -238,7 +238,7 @@ void app_main(void)
         /* Stop when the last pipeline element (bt_stream_writer in this case) receives stop event */
         if (msg.source_type == AUDIO_ELEMENT_TYPE_ELEMENT && msg.source == (void *) bt_stream_writer
                 && msg.cmd == AEL_MSG_CMD_REPORT_STATUS && (int) msg.data == AEL_STATUS_STATE_STOPPED) {
-                ESP_LOGW(TAG, "[ * ] ---------------------------------> Audio stop event");
+                ESP_LOGW(TAG, "[ * ] Audio stop event");
                 
             break;
         }
