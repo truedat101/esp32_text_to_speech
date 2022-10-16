@@ -88,7 +88,7 @@ static audio_element_handle_t create_filter(int source_rate, int source_channel,
     return rsp_filter_init(&rsp_cfg);
 }
 
-char input[255] = "HELLO MY NAME IS SAM.  HELLO MY NAME IS SAM.  HELLO MY NAME IS SAM.  ";
+char input[255] = "HELLO MY NAME IS SAM.  AE4AE7ND- AY4 AEM DHAX LOHOW4EHST PRAY4ST- AHV DHEHM AO4UL.  QQQQ WWAW7IY1IY3IY. DHAE3T WHAHZ AH TAH4FIY.";
 
 void app_main(void)
 {
@@ -195,10 +195,10 @@ void app_main(void)
     SetMouth(160);
     */
     // robot
-    SetSpeed(100);
-    SetPitch(64);
-    SetThroat(128);
-    SetMouth(128);
+    SetSpeed(CONFIG_SAM_SPEED);
+    SetPitch(CONFIG_SAM_PITCH);
+    SetThroat(CONFIG_SAM_THROAT);
+    SetMouth(CONFIG_SAM_MOUTH);
 
     SetInput(input);
 
